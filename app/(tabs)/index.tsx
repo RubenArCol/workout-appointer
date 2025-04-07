@@ -50,6 +50,12 @@ export default function HomeScreen() {
           <ThemedText type="defaultSemiBold">app-example</ThemedText>.
         </ThemedText>
       </ThemedView>
+      <ThemedView style={styles.stepContainer}>
+        <ThemedText type="subtitle">¡Hola!</ThemedText>
+        <ThemedText>
+          Soy Rubén, y esta app es parte de mi Trabajo de Fin de Grado. Su objetivo es ayudarte a crear y organizar tus entrenamientos.
+        </ThemedText>
+    </ThemedView>
     </ParallaxScrollView>
   );
 }
