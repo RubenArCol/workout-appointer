@@ -15,7 +15,7 @@ export default function CrearEntrenamiento() {
     }
 
     const nuevo = {
-    id: Date.now(), // identificador temporal único
+    id: Date.now(), // TODO: indicador temporal unico mientras uso lista local
     nombre,
     tipo,
     duracion,
