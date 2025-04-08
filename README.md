@@ -88,11 +88,5 @@ http://localhost:8000/api/ejercicios
 ## ✨ Autor
 
 **Rubén Arcos Colchero**  
-TFG - Desarrollo de una app de entrenamiento multiplataforma  
-2º DAM - IES Torre del Rey (Pilas)
-
----
-
-## 📄 Licencia
-
-Este proyecto está en desarrollo académico y no tiene licencia de uso comercial (por ahora 😉).
+TFG - Desarrollo de una app de Desarrollo de aplicaciones Multiplataforma  
+2º DAM - IES Torre del Rey (Pilas) 
