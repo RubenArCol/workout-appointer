@@ -43,48 +43,6 @@ workout-appointer/
 
 ---
 
-## 🚀 Cómo iniciar el proyecto
-
-### 📲 App (Expo)
-
-```bash
-cd workout-appointer
-npm install
-npx expo start
-```
-
-Escanea el QR desde la Expo Go App (Android/iOS)
-
----
-
-### 🛠 API (Laravel)
-
-```bash
-cd api
-composer install
-cp .env.example .env
-php artisan key:generate
-# Configura .env con tus datos MySQL
-php artisan migrate --seed
-php artisan serve
-```
-
-Luego accede a:
-```
-http://localhost:8000/api/ejercicios
-```
-
----
-
-## 📌 Próximos pasos
-
-- Añadir rutas de registro/login de usuarios
-- Conectar app móvil con API vía fetch/axios
-- Almacenar entrenamientos personalizados por usuario
-- Mover rutas definitivas a `routes/api.php`
-
----
-
 ## ✨ Autor
 
 **Rubén Arcos Colchero**  
