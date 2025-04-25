@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Text, StyleSheet, Alert } from 'react-native';
 import { useColorScheme } from 'react-native';
+import { useRouter } from 'expo-router';
 
 export default function RegisterScreen() {
   const [nombre, setNombre] = useState('');
@@ -8,6 +9,7 @@ export default function RegisterScreen() {
   const [password, setPassword] = useState('');
   const [meta, setMeta] = useState('');
   const theme = useColorScheme();
+  const router = useRouter();
   
 
   const handleRegister = async () => {
@@ -29,6 +31,7 @@ export default function RegisterScreen() {
 
       if (response.ok) {
         Alert.alert('Registro completado', `¡Bienvenido, ${data.name || 'usuario'}!`);
+        router.replace('/(auth)/login');
       } else {
         // Laravel te devuelve los errores en data.errors
         if (data.errors && typeof data.errors === 'object') {

@@ -59,6 +59,10 @@ export default function LoginScreen() {
         onChangeText={setPassword}
       />
       <Button title="Iniciar sesión" onPress={handleLogin} />
+      <Button
+        title="¿No tienes cuenta? Regístrate"
+        onPress={() => router.push('/(auth)/register')}
+      />
     </View>
   );
 }

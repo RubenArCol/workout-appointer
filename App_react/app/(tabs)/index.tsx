@@ -26,10 +26,13 @@ export default function HomeScreen() {
           <Button title="Crear entrenamiento" onPress={() => router.push('/crear-entrenamiento')} />
       </ThemedView>
 
+      {/*
+      lo dejo aquí por si hay que hacer pruebas y se me rompe el otro
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">¡Registrate!</ThemedText>
           <Button title="Registro" onPress={() => router.push('/(auth)/register')} />
       </ThemedView>
+      */}
     </ParallaxScrollView>
   );
 }
