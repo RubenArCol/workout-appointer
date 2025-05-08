@@ -11,14 +11,21 @@ export default function Index() {
 
   useEffect(() => {
     const checkLogin = async () => {
-      const user = await AsyncStorage.getItem('user');
+      const userData = await AsyncStorage.getItem('user');
+      const user = JSON.parse(userData || '{}');
       console.log('🔐 Usuario:', user);
       console.log('📍 Path actual:', pathname);
 
-      if (user && pathname !== '/(tabs)') {
-        router.replace('/(tabs)');
-      } else if (!user && pathname !== '/(auth)/login') {
+      if (!user.id && pathname !== '/(auth)/login') {
         router.replace('/(auth)/login');
+      }
+      else if (user.id && pathname !== '/(tabs)') {
+        if (user.roles && user.roles.includes('admin')) {
+          await AsyncStorage.setItem('isAdmin', 'true');
+        } else {
+          await AsyncStorage.removeItem('isAdmin');
+        }
+        router.replace('/(tabs)');
       }
 
       setLoading(false);

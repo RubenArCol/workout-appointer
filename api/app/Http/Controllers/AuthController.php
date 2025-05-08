@@ -30,6 +30,8 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'meta' => $request->meta,
         ]);
+        // todo usuario creado solo tiene permisos de "ver-entrenamiento"
+        $user->assignRole('usuario');
 
         return response()->json($user, 201);
     }
@@ -43,21 +45,25 @@ class AuthController extends Controller
         
         if ($validator->fails()) {
             return response()->json(['message' => 'Datos inválidos', 'errors' => $validator->errors()], 422);
-        }        
+        }
 
-        $user = \App\Models\User::where('email', $request->email)->first();
+        $user = User::where('email', $request->email)->first();
 
-        if (!$user || !\Illuminate\Support\Facades\Hash::check($request->password, $user->password)) {
+        if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
                 'message' => 'Credenciales incorrectas',
             ], 401);
         }
+
+        $token = $user->createToken('mobile_app_token')->plainTextToken;
 
         return response()->json([
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
             'meta' => $user->meta,
+            'roles' => $user->getRoleNames(),
+            'token' => $token,
         ]);
     }
 

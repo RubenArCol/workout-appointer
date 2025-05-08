@@ -14,7 +14,10 @@ export default function ProfileScreen() {
 
   return (
     <View style={styles.container}>
-      <Button title="Cerrar sesión" onPress={handleLogout} color="#d00" />
+      <Button title="Cerrar sesión" onPress={async () => {
+        await AsyncStorage.removeItem('user');
+        router.replace('/(auth)/login');
+      }} color="#d00" />
     </View>
   );
 }

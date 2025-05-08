@@ -21,14 +21,15 @@ export default function LoginScreen() {
         },
         body: JSON.stringify({ email, password }),
       });
-  
-      console.log('📡 STATUS:', response.status);
+
+      console.log('STATUS:', response.status);
   
       const data = await response.json();
       console.log('📦 DATA:', data);
   
       if (response.ok) {
         await AsyncStorage.setItem('user', JSON.stringify(data));
+        await AsyncStorage.setItem('token', data.token);
         router.replace('/(tabs)');
 
       } else {

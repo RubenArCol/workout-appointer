@@ -1,120 +1,116 @@
-import { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Button, ActivityIndicator, StyleSheet, useColorScheme } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function CrearEntrenamiento() {
-  const [nombre, setNombre] = useState('');
-  const [tipo, setTipo] = useState('');
-  const [duracion, setDuracion] = useState('');
+// Estructura de los ejercicios
+type Ejercicio = {
+  nombre: string;
+  grupo_muscular: string;
+  tipo: string;
+  descripcion: string;
+};
 
-  const [entrenamientos, setEntrenamientos] = useState<any[]>([]); // lista local
+export default function CrearEntrenamientoScreen() {
+  // Estado para la meta del usuario (fuerza/definición)
+  const [meta, setMeta] = useState('');
+  // Lista de ejercicios que mostraremos
+  const [ejercicios, setEjercicios] = useState<Ejercicio[]>([]);
+  // Estado para mostrar un cargador mientras carga
+  const [loading, setLoading] = useState(false);
+  // Saber si el móvil está en modo oscuro o claro
+  const theme = useColorScheme();
 
-  const guardarEntrenamiento = () => {
-    if (!nombre || !tipo || !duracion) {
-    alert('Por favor, completa todos los campos');
-    return;
+  // Función que pide los ejercicios al backend
+  const obtenerEntrenamiento = async () => {
+    setLoading(true);
+  
+    try {
+      // Sacamos los datos del usuario guardados (meta, email, etc.)
+      const userData = await AsyncStorage.getItem('user');
+      const user = JSON.parse(userData || '{}');
+      const userMeta = user.meta?.toLowerCase() || 'fuerza'; // por defecto fuerza
+      setMeta(userMeta);
+  
+      // 👇 AQUÍ está el bloque corregido
+      const response = await fetch(`http://192.168.18.2:8000/api/entrenamiento/${userMeta}`, {
+        headers: {
+          'Authorization': `Bearer ${user.token}`,  // 👈 usamos el token guardado
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      const data: Ejercicio[] = await response.json();
+  
+      // Agrupamos por grupo muscular (pecho, pierna, brazo, etc.)
+      const ejerciciosPorGrupo: { [grupo: string]: Ejercicio[] } = {};
+      data.forEach((ej) => {
+        if (!ejerciciosPorGrupo[ej.grupo_muscular]) {
+          ejerciciosPorGrupo[ej.grupo_muscular] = [];
+        }
+        ejerciciosPorGrupo[ej.grupo_muscular].push(ej);
+      });
+  
+      // Para cada grupo, elegimos uno al azar
+      const seleccionados = Object.values(ejerciciosPorGrupo).map((grupo) => {
+        const randomIndex = Math.floor(Math.random() * grupo.length);
+        return grupo[randomIndex];
+      });
+  
+      setEjercicios(seleccionados);
+    } catch (error) {
+      console.error('Error al obtener el entrenamiento:', error);
+    } finally {
+      setLoading(false);
     }
-
-    const nuevo = {
-    id: Date.now(), // TODO: indicador temporal unico mientras uso lista local
-    nombre,
-    tipo,
-    duracion,
-    };
-
-    setEntrenamientos([...entrenamientos, nuevo]);
-
-    // Limpia el formulario
-    setNombre('');
-    setTipo('');
-    setDuracion('');
   };
 
-    const eliminarEntrenamiento = (id: number) => {
-    const nuevos = entrenamientos.filter((e) => e.id !== id);
-    setEntrenamientos(nuevos);
-    };
+  // Cuando cargue la pantalla, pedimos el entrenamiento automáticamente
+  useEffect(() => {
+    obtenerEntrenamiento();
+  }, []);
 
+  const textColor = theme === 'dark' ? '#fff' : '#000'; // adapto la app al tema del teléfono
+
+  if (loading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
+  // Si ya cargó, mostramos los ejercicios en pantalla
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Crear nuevo entrenamiento</Text>
-
-      <TextInput
-        placeholder="Nombre del entrenamiento"
-        value={nombre}
-        onChangeText={setNombre}
-        style={styles.input}
-      />
-      <TextInput
-        placeholder="Tipo de entrenamiento"
-        value={tipo}
-        onChangeText={setTipo}
-        style={styles.input}
-      />
-      <TextInput
-        placeholder="Duración (minutos)"
-        keyboardType="numeric"
-        value={duracion}
-        onChangeText={setDuracion}
-        style={styles.input}
-      />
-
-      <Button title="Guardar entrenamiento" onPress={guardarEntrenamiento} />
-
-      <Text style={styles.subtitle}>Entrenamientos guardados:</Text>
-      <FlatList
-        data={entrenamientos}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-            <View style={styles.card}>
-              <Text style={styles.cardTitle}>{item.nombre}</Text>
-              <Text>{item.tipo} - {item.duracion} min</Text>
-              <Button
-                title="Eliminar"
-                onPress={() => eliminarEntrenamiento(item.id)}
-                color="#d9534f"
-              />
-            </View>
-          )}
-      />
+    <View style={[styles.container, { backgroundColor: theme === 'dark' ? '#000' : '#fff' }]}>
+      <Text style={[styles.title, { color: textColor }]}>
+        Entrenamiento para meta: {meta}
+      </Text>
+      {ejercicios.map((ej, index) => (
+        <View key={index} style={styles.card}>
+          <Text style={[styles.name, { color: textColor }]}>{ej.nombre}</Text>
+          <Text style={{ color: textColor }}>
+            {ej.grupo_muscular} - {ej.tipo}
+          </Text>
+          <Text style={[styles.desc, { color: theme === 'dark' ? '#ccc' : '#555' }]}>{ej.descripcion}</Text>
+        </View>
+      ))}
+      <Button title="Generar nuevo entrenamiento" onPress={obtenerEntrenamiento} />
     </View>
   );
 }
 
+// Estilos de la pantalla
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 24,
-    backgroundColor: '#fff',
-    gap: 16,
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginBottom: 12,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#aaa',
-    borderRadius: 8,
-    padding: 12,
-    fontSize: 16,
-  },
-  subtitle: {
-    fontSize: 18,
-    marginTop: 24,
-    marginBottom: 8,
-    fontWeight: '600',
-  },
+  container: { flex: 1, padding: 20 },
+  centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  title: { fontSize: 20, fontWeight: 'bold', marginBottom: 16 },
   card: {
     padding: 12,
     borderWidth: 1,
-    borderColor: '#ddd',
     borderRadius: 8,
-    marginBottom: 12,
-    backgroundColor: '#f9f9f9',
-    gap: 4,
+    marginBottom: 10,
+    borderColor: '#888',
   },
-  cardTitle: {
-    fontWeight: 'bold',
-  },
+  name: { fontSize: 16, fontWeight: 'bold' },
+  desc: { marginTop: 4 },
 });
