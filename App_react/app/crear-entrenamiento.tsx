@@ -31,10 +31,9 @@ export default function CrearEntrenamientoScreen() {
       const userMeta = user.meta?.toLowerCase() || 'fuerza'; // por defecto fuerza
       setMeta(userMeta);
   
-      // 👇 AQUÍ está el bloque corregido
       const response = await fetch(`http://192.168.18.2:8000/api/entrenamiento/${userMeta}`, {
         headers: {
-          'Authorization': `Bearer ${user.token}`,  // 👈 usamos el token guardado
+          'Authorization': `Bearer ${user.token}`,  // usamos el token guardado
           'Content-Type': 'application/json',
         },
       });
