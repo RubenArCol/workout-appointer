@@ -13,8 +13,8 @@ export default function Index() {
     const checkLogin = async () => {
       const userData = await AsyncStorage.getItem('user');
       const user = JSON.parse(userData || '{}');
-      console.log('🔐 Usuario:', user);
-      console.log('📍 Path actual:', pathname);
+      console.log('Usuario:', user);
+      console.log('Path actual:', pathname);
 
       if (!user.id && pathname !== '/(auth)/login') {
         router.replace('/(auth)/login');
