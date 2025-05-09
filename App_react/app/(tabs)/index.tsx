@@ -37,10 +37,12 @@ export default function HomeScreen() {
         <Button title="Crear entrenamiento" onPress={() => router.push('/crear-entrenamiento')} />
       </ThemedView>
 
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Panel de administrador</ThemedText>
-        <Button title="Añadir ejercicio" onPress={() => router.push('/crear-ejercicio')} />
-      </ThemedView>
+      {isAdmin && (
+        <ThemedView style={styles.stepContainer}>
+          <ThemedText type="subtitle">Panel de administrador</ThemedText>
+          <Button title="Añadir ejercicio" onPress={() => router.push('/crear-ejercicio')} />
+        </ThemedView>
+      )}
     </ParallaxScrollView>
   );
 }
