@@ -1,9 +1,44 @@
 @extends('layouts.app')
 
-@section('title', 'Ejercicios')
-
 @section('content')
-    <h1 class="text-2xl font-bold mb-4">Listado de Ejercicios</h1>
+    <div class="max-w-xl mx-auto bg-surface p-8 rounded-xl shadow-md">
+        <h2 class="text-2xl font-bold mb-6 text-black">Crear Nuevo Entrenamiento</h2>
+        <form action="{{-- route('entrenamientos.store') --}}" method="POST" class="space-y-5">
+            @csrf
 
-    {{-- Aquí se mostrará la lista, o un botón para crear uno nuevo --}}
+            <div>
+                <label for="nombre" class="block mb-2 text-sm font-semibold text-black">Nombre del Entrenamiento</label>
+                <input type="text" name="nombre" id="nombre"
+                       class="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 text-white focus:ring-2 focus:ring-red-600 focus:outline-none">
+            </div>
+
+            <div>
+                <label for="descripcion" class="block mb-2 text-sm font-semibold text-black">Descripción</label>
+                <textarea name="descripcion" id="descripcion" rows="4"
+                          class="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 text-white focus:ring-2 focus:ring-red-600 focus:outline-none"></textarea>
+            </div>
+
+            <div>
+                <label for="duracion" class="block mb-2 text-sm font-semibold text-black">Duración (minutos)</label>
+                <input type="number" name="duracion" id="duracion" min="1"
+                       class="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 text-white focus:ring-2 focus:ring-red-600 focus:outline-none">
+            </div>
+
+            <div>
+                <label for="tipo" class="block mb-2 text-sm font-semibold text-black">Tipo de Entrenamiento</label>
+                <select name="tipo" id="tipo"
+                        class="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 text-white focus:ring-2 focus:ring-red-600 focus:outline-none">
+                    <option value="fuerza">Fuerza</option>
+                    <option value="definicion">Definición</option>
+                </select>
+            </div>
+
+            <div class="pt-4">
+                <button type="submit"
+                        class="w-full bg-red-600 hover:bg-red-700 transition font-semibold py-2 rounded-lg text-white shadow-md">
+                    Crear Entrenamiento
+                </button>
+            </div>
+        </form>
+    </div>
 @endsection
