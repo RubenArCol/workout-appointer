@@ -5,9 +5,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\AuthController;
 
-// Registro y login → públicos, no necesitan token
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+
+Route::get('/ejercicios', [ExerciseController::class, 'index']);
 
 // Ruta de prueba pública
 Route::get('/test', function () {
@@ -18,7 +19,6 @@ Route::get('/test', function () {
 Route::middleware('auth:sanctum')->group(function () {
 
     // Usuarios logueados (con cualquier rol)
-    Route::get('/ejercicios', [ExerciseController::class, 'index']);
     Route::get('/entrenamiento/{meta}', [ExerciseController::class, 'generarEntrenamiento']);
 
     // Solo admin (Spatie middleware)

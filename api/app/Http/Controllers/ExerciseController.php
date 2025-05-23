@@ -51,14 +51,14 @@ class ExerciseController extends Controller
             'descripcion' => 'nullable|string',
         ]);
 
-        $exercise = Exercise::create($validated);
+        Exercise::create($validated);
 
-        return response()->json([
-            'message' => 'Ejercicio creado correctamente',
-            'exercise' => $exercise,
-        ], 201);
+        return redirect()->back()->with('success', 'Entrenamiento creado correctamente');
     }
 
-
-
+    public function listView()
+    {
+        $ejercicios = Exercise::all();
+        return view('exercises.list', compact('ejercicios'));
+    }
 }
