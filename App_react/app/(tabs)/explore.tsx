@@ -72,8 +72,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: '100%',
     height: '100%',
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
   },
   headerLogo: {
     width: 120,
