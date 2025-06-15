@@ -11,6 +11,7 @@
 - Generación dinámica de entrenamientos personalizados
 - Consulta de entrenamientos desde la app o desde una web
 - API RESTful con Laravel para gestionar usuarios y ejercicios
+- Panel de administración permisado
 
 ---
 
@@ -19,27 +20,15 @@
 ### 🔹 Frontend (App móvil)
 - [React Native](https://reactnative.dev/) con [Expo](https://expo.dev/)
 - TypeScript y componentes reutilizables
-- Almacenamiento local por ahora (más adelante con backend)
+- Almacenamiento en BBDD usando API
+- Permisado mediante Sanctum
+- Login/Register
 
 ### 🔹 Backend (API)
-- [Laravel 11](https://laravel.com/) (PHP)
+- [Laravel 12](https://laravel.com/) (PHP)
 - Base de datos MySQL gestionada con phpMyAdmin (vía XAMPP)
-- Rutas definidas en `web.php` y `api.php`
+- Endpoints permisados con sanctum
 - Modelo `Ejercicio` con filtros por tipo y grupo muscular
-
----
-
-## 🗂 Estructura del proyecto
-
-```
-workout-appointer/
-├── app/                # App React Native (Expo)
-├── api/                # Laravel API
-│   ├── app/Models/Ejercicio.php
-│   ├── app/Http/Controllers/ExerciseController.php
-│   ├── routes/web.php (rutas API temporales)
-├── README.md
-```
 
 ---
 
