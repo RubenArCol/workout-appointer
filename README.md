@@ -24,7 +24,7 @@
 ### 🔹 Backend (API)
 - [Laravel 11](https://laravel.com/) (PHP)
 - Base de datos MySQL gestionada con phpMyAdmin (vía XAMPP)
-- Rutas definidas (temporalmente) en `web.php`
+- Rutas definidas en `web.php` y `api.php`
 - Modelo `Ejercicio` con filtros por tipo y grupo muscular
 
 ---
