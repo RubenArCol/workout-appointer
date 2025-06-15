@@ -14,7 +14,7 @@ export default function Ejercicios() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://192.168.18.2:8000/api/ejercicios') // esto se reemplaza por la ip local (ipv4)
+    fetch('http://192.168.18.183:8000/api/ejercicios') // esto se reemplaza por la ip local (ipv4)
       .then((res) => res.json())
       .then((data) => {
         setEjercicios(data);

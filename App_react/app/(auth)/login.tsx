@@ -14,7 +14,7 @@ export default function LoginScreen() {
     console.log('Intentando iniciar sesión...');
   
     try {
-      const response = await fetch('http://192.168.18.2:8000/api/login', {
+      const response = await fetch('http://192.168.18.183:8000/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

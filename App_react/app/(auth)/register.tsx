@@ -14,7 +14,7 @@ export default function RegisterScreen() {
 
   const handleRegister = async () => {
     try {
-      const response = await fetch('http://192.168.18.2:8000/api/register', {
+      const response = await fetch('http://192.168.18.183:8000/api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -36,9 +36,9 @@ export default function RegisterScreen() {
         // Laravel te devuelve los errores en data.errors
         if (data.errors && typeof data.errors === 'object') {
             const errores: string[] = Object.values(data.errors).flatMap((e) => e as string[]);
-            Alert.alert('❌ Registro inválido', errores[0]);
+            Alert.alert('Registro inválido', errores[0]);
         } else {
-          Alert.alert('❌ Error', data.message || 'No se pudo registrar');
+          Alert.alert('Error', data.message || 'No se pudo registrar');
         }
       }
     } catch (error) {
